@@ -1,4 +1,5 @@
 from parsers.python_parser import *
+from chunking.chunker import RouteChunk
 
 def scan_project(path):
     # 1. Walk the project, get .py files
@@ -12,8 +13,8 @@ def scan_project(path):
         routes = extract_flask_routes_from_file(file)
         for route in routes: 
             print("\n\n--- Route Found ---")
-            for key, value in route.items():
-                print(f"{key}: {value}")
+            chunk = RouteChunk(**route)
+            print(chunk.to_text_chunk())
 
 
 
