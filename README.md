@@ -46,5 +46,6 @@ The core pipeline of the project consists of the following stages:
 ## Running the program
 
 1. Start by changing into the project directory
-2. Then run `source .venv/bin/activate` to start the virtual environment
-3. To test the app with the current flask example you can run `python3 cli.py scan examples/flask-sample-1`
+2. Run `source .venv/bin/activate` to start the virtual environment
+3. Install dependencies with `ppip install -r requirements.txt`
+4. To test the app with the current flask example you can run `python3 cli.py scan examples/flask-sample-1`
