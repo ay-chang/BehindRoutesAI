@@ -18,18 +18,23 @@ os.makedirs("vector_store", exist_ok=True)
 index = faiss.IndexFlatL2(EMBEDDING_DIM)
 metadata: List[str] = []  # Will store the text chunk or chunk ID
 
+
+# Add an embedding to our index as well as attaching metadata
 def store_vector(embedding: List[float], chunk_id: str):
     global metadata
     index.add([embedding])
     metadata.append(chunk_id)
 
-# Saves the vectors and metadata to disk so you don’t lose them between runs
+# Saves the vector embeddings and metadata to disk so we don’t lose them
+# between runs, this way we dont have to re-embed everything everytime we run 
+# the app, saving costs.
 def save_index():
     faiss.write_index(index, INDEX_PATH)
     with open(META_PATH, "wb") as f:
         pickle.dump(metadata, f)
 
-
+# Reads the FAISS index and metadata back into memory so users can Use the stored 
+# vectors for search and map those vectors back to the original code chunks
 def load_index():
     global index, metadata
     if os.path.exists(INDEX_PATH):
@@ -40,7 +45,6 @@ def load_index():
 
 # This performs the similarity search and gives you the top matching vectors
 def query_vector(vector: List[float], top_k: int = 5) -> List[Tuple[int, float]]:
-    """Return (index, distance) pairs for the top_k most similar vectors"""
     distances, indices = index.search([vector], top_k)
     return list(zip(indices[0], distances[0]))
 
