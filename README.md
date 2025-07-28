@@ -1,6 +1,6 @@
 # BehindRoutesAI
 
-BehindRoutesAI is a tool designed to automatically extract, analyze, and embed API endpoint logic from Python web projects (e.g., Flask). It enables developers to build powerful AI-assisted tools such as documentation generators, intelligent query assistants, and code understanding interfaces by transforming backend route logic into semantically searchable vectors.
+BehindRoutesAI is an Agentic AI and RAG-powered tool that helps developers understand and document backend systems. It’s designed to support both new team members onboarding onto unfamiliar codebases and existing developers navigating or maintaining large projects. By parsing and embedding backend logic, it enables semantic search, intelligent code exploration, and auto-documentation of existing APIs.
 
 ## What This Project Does
 
