@@ -2,6 +2,7 @@ from parsers.python_parser import find_python_files, extract_flask_routes_from_f
 from chunking.chunker import RouteChunk
 from embeddings.embedder import get_embedding
 from embeddings.vector_store import store_vector, save_index
+from llm.query_engine import run_rag_pipeline
 
 def scan_project(path):
     # 1. Walk the project, get .py files
@@ -30,10 +31,7 @@ def scan_project(path):
 
 
 def ask_question(question):
-    # 1. Embed the question
-    # 2. Query vector store for top-k chunks
-    # 3. Format prompt and send to GPT
-    # 4. Print the answer
-
-    pass
+    answer = run_rag_pipeline(question)
+    print("\n💡 Answer:\n")
+    print(answer)
     

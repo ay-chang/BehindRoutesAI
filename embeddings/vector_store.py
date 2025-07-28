@@ -3,6 +3,7 @@
 import faiss
 import pickle
 import os
+import numpy as np
 from typing import List, Tuple
 
 EMBEDDING_DIM = 1536  # For OpenAI's text-embedding-3-small
@@ -22,7 +23,8 @@ metadata: List[str] = []  # Will store the text chunk or chunk ID
 # Add an embedding to our index as well as attaching metadata
 def store_vector(embedding: List[float], chunk_id: str):
     global metadata
-    index.add([embedding])
+    embedding_np = np.array([embedding], dtype=np.float32)
+    index.add(embedding_np)
     metadata.append(chunk_id)
 
 # Saves the vector embeddings and metadata to disk so we don’t lose them
@@ -45,7 +47,8 @@ def load_index():
 
 # This performs the similarity search and gives you the top matching vectors
 def query_vector(vector: List[float], top_k: int = 5) -> List[Tuple[int, float]]:
-    distances, indices = index.search([vector], top_k)
+    np_vector = np.array([vector]).astype("float32")  # wrap + convert to correct type
+    distances, indices = index.search(np_vector, top_k)
     return list(zip(indices[0], distances[0]))
 
 def get_chunk_by_index(i: int) -> str:
