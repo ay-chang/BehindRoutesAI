@@ -1,8 +1,11 @@
+# llm/query_engine.py
+
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from embeddings.vector_store import load_index, query_vector, get_chunk_by_index
 from embeddings.embedder import get_embedding
+from llm.prompts import build_rag_prompt
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -21,19 +24,7 @@ def run_rag_pipeline(user_question: str, top_k: int = 4) -> str:
 
     # Step 4: Format the prompt
     context = "\n\n---\n\n".join(top_chunks)
-    prompt = f"""
-You are an assistant that helps developers understand backend API logic.
-
-Based on the following backend route code snippets, answer the question:
-
-[QUESTION]
-{user_question}
-
-[CONTEXT]
-{context}
-
-Respond in clear, concise language, referencing routes or functions if needed.
-""".strip()
+    prompt = build_rag_prompt(user_question, context)
 
     # Step 5: Send to OpenAI
     response = client.chat.completions.create(
